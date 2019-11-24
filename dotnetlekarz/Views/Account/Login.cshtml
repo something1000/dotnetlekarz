@@ -2,6 +2,12 @@
 @{
     ViewData["Title"] = "Login";
 }
-
 <h1>Formularz logowania</h1>
 
+<form asp-controller="Account" asp-action="Submit">
+  Login:<br>
+  <input type="text" name="login"><br>
+  Password:<br>
+  <input type="text" name="password"><br>
+  <input type="submit">
+</form>

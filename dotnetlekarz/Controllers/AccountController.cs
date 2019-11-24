@@ -8,6 +8,7 @@ namespace dotnetlekarz.Controllers
 {
     public class AccountController : Controller
     {
+        private bool loggedIn = false;
         public IActionResult Index()
         {
             return View();
@@ -15,6 +16,12 @@ namespace dotnetlekarz.Controllers
 
         public IActionResult Login()
         {
+            return View();
+        }
+
+        public IActionResult Submit()
+        {
+            //TODO authenticate
             return View();
         }
 
