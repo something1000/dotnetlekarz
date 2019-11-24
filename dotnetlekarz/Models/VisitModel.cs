@@ -7,6 +7,17 @@ namespace dotnetlekarz.Models
 {
     public class VisitModel : ICloneable
     {
+        public VisitModel()
+        {
+        }
+
+        public VisitModel(string doctor, string visitor, DateTime dateTime)
+        {
+            this.doctor = doctor;
+            this.visitor = visitor;
+            this.dateTime = dateTime;
+        }
+
         public int id { get; set; }
         public String doctor { get; set; }
 
@@ -22,6 +33,11 @@ namespace dotnetlekarz.Models
             clone.visitor = this.visitor;
             clone.dateTime = this.dateTime;
             return clone;
+        }
+
+        public override String ToString()
+        {
+            return doctor + " " + visitor + " " + dateTime;
         }
     }
 }

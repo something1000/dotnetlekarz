@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace dotnetlekarz.Services
 {
-    interface IUserService
+    public interface IUserService
     {
         void AddUser(UserModel user);
 

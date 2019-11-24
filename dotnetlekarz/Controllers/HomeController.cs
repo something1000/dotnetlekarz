@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using dotnetlekarz.Models;
+using dotnetlekarz.Services;
 
 namespace dotnetlekarz.Controllers
 {
@@ -13,9 +14,12 @@ namespace dotnetlekarz.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IVisitService _visitService;
+
+        public HomeController(ILogger<HomeController> logger, IVisitService service)
         {
             _logger = logger;
+            _visitService = service;
         }
 
         public IActionResult Index()
@@ -25,7 +29,7 @@ namespace dotnetlekarz.Controllers
 
         public IActionResult Privacy()
         {
-            return View();
+            return View(_visitService.GetAllVisits());
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

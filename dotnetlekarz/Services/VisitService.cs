@@ -7,30 +7,34 @@ using System.Threading.Tasks;
 
 namespace dotnetlekarz.Services
 {
-    public class VisitServices
+    public class VisitService : IVisitService
     {
-        private static readonly VisitServices singletonVisitService = new VisitServices();
-
-        private VisitServices()
-        {
-
-        }
-
-        public static VisitServices GetInstance()
-        {
-            return singletonVisitService;
-        }
-
+        //private static readonly VisitService singletonVisitService = new VisitService();
         private List<VisitModel> visits { get; }
         private int lastId = 0;
 
-        private void AddVisit(VisitModel visit)
+        public VisitService()
+        {
+            visits = new List<VisitModel>();
+            AddVisit(new VisitModel("jkowalski", "agrabowski", DateTime.Now));
+            AddVisit(new VisitModel("jkowalski", "kjablonski", DateTime.Now));
+            AddVisit(new VisitModel("wrzezucha", "bgawrych", DateTime.Now));
+            AddVisit(new VisitModel("wrzezucha", "kjablonski", DateTime.Now));
+        }
+
+        //public static VisitService GetInstance()
+        //{
+        //    return singletonVisitService;
+        //}
+
+
+        public void AddVisit(VisitModel visit)
         {
             visit.id = Interlocked.Increment(ref lastId);
             visits.Add(visit);
         }
 
-        private bool RemoveVisit(int id)
+        public bool RemoveVisit(int id)
         {
             var toRemove = visits.Find(x => x.id == id);
             if(toRemove != null)
@@ -41,7 +45,7 @@ namespace dotnetlekarz.Services
             return false;
         }
 
-        private void ModifyVisit(VisitModel visit)
+        public void ModifyVisit(VisitModel visit)
         {
             var foundVisit = visits.FindIndex(x => x.id == visit.id);
             if(foundVisit >= 0)
@@ -50,7 +54,7 @@ namespace dotnetlekarz.Services
             }
         }
 
-        private VisitModel GetVisit(int id)
+        public VisitModel GetVisit(int id)
         {
             var foundVisit = visits.Find(v => v.id == id);
             if(foundVisit == null)
@@ -60,7 +64,7 @@ namespace dotnetlekarz.Services
             return (VisitModel)foundVisit.Clone();
         }
 
-        private List<VisitModel> GetAllVisits()
+        public List<VisitModel> GetAllVisits()
         {
             List<VisitModel> listCopy = new List<VisitModel>();
             visits.ForEach(v =>
