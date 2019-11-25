@@ -15,6 +15,7 @@ namespace dotnetlekarz.Services
         void ModifyUser(UserModel user);
 
         UserModel GetUser(int id);
+        UserModel GetUserByLogin(String login);
 
         List<UserModel> GetAllUsers();
     }

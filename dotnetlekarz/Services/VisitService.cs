@@ -13,13 +13,18 @@ namespace dotnetlekarz.Services
         private List<VisitModel> visits { get; }
         private int lastId = 0;
 
-        public VisitService()
+        private IUserService userService;
+
+        public VisitService(IUserService userService)
         {
+            this.userService = userService;
+
             visits = new List<VisitModel>();
-            AddVisit(new VisitModel("jkowalski", "agrabowski", DateTime.Now));
-            AddVisit(new VisitModel("jkowalski", "kjablonski", DateTime.Now));
-            AddVisit(new VisitModel("wrzezucha", "bgawrych", DateTime.Now));
-            AddVisit(new VisitModel("wrzezucha", "kjablonski", DateTime.Now));
+
+            AddVisit(new VisitModel(userService.GetUserByLogin("jkowalski"), userService.GetUserByLogin("agrabowski"), DateTime.Now));
+            AddVisit(new VisitModel(userService.GetUserByLogin("jkowalski"), userService.GetUserByLogin("kjablonski"), DateTime.Now));
+            AddVisit(new VisitModel(userService.GetUserByLogin("wrzezucha"), userService.GetUserByLogin("bgawrych"), DateTime.Now));
+            AddVisit(new VisitModel(userService.GetUserByLogin("wrzezucha"), userService.GetUserByLogin("kjablonski"), DateTime.Now));
         }
 
         //public static VisitService GetInstance()

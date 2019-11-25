@@ -11,7 +11,7 @@ namespace dotnetlekarz.Models
         {
         }
 
-        public VisitModel(string doctor, string visitor, DateTime dateTime)
+        public VisitModel(UserModel doctor, UserModel visitor, DateTime dateTime)
         {
             this.doctor = doctor;
             this.visitor = visitor;
@@ -19,9 +19,9 @@ namespace dotnetlekarz.Models
         }
 
         public int id { get; set; }
-        public String doctor { get; set; }
+        public UserModel doctor { get; set; }
 
-        public String visitor { get; set; }
+        public UserModel visitor { get; set; }
 
         public System.DateTime dateTime { get; set; }
 

@@ -16,6 +16,7 @@ namespace dotnetlekarz.Services
 
         public UserService()
         {
+            users = new List<UserModel>();
             AddUser(new UserModel("Jan", "Kowalski", "jkowalski", "123", UserModel.Role.Doctor));
             AddUser(new UserModel("Wojciech", "Rzezucha", "wrzezucha", "123", UserModel.Role.Doctor));
             AddUser(new UserModel("Bart", "Gawrych", "bgawrych", "123", UserModel.Role.Visitor));
@@ -72,6 +73,16 @@ namespace dotnetlekarz.Services
                 listCopy.Add((UserModel)v.Clone());
             });
             return listCopy;
+        }
+
+        public UserModel GetUserByLogin(string login)
+        {
+            var foundUser = users.Find(v => v.login.Equals(login));
+            if (foundUser == null)
+            {
+                return null;
+            }
+            return (UserModel)foundUser.Clone();
         }
     }
 }
