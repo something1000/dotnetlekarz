@@ -2,17 +2,29 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotnetlekarz.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 
 namespace dotnetlekarz.Controllers
 {
     public class VisitController : Controller
     {
+        private readonly ILogger<HomeController> _logger;
+
+        private readonly IVisitService _visitService;
+
+        public VisitController(ILogger<HomeController> logger, IVisitService service)
+        {
+            _logger = logger;
+            _visitService = service;
+        }
+
         // GET: Visit
         public ActionResult Index()
         {
-            return View();
+            return View(_visitService.GetAllVisits());
         }
 
         // GET: Visit/Details/5
