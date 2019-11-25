@@ -22,7 +22,9 @@
             <td>@visit.doctor</td>
             <td>26.11.2019</td>
             <td>8:30</td>
-            <td><button class="btn"><i class="fa fa-calendar" style="color: white;"></i></button></td>
+            <td><button class="btn" onclick="location.href='@Url.Action("Edit", "Visit", new { id = visit.id })'" >
+                <i class="fa fa-calendar" style="color: white;"></i>
+                </button></td>
             <td><button class="btn"><i class="fa fa-trash" style="color: white;"></i></button></td>
         </tr>
     }

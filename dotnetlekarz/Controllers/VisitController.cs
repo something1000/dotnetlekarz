@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using dotnetlekarz.Models;
 using dotnetlekarz.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -59,7 +60,8 @@ namespace dotnetlekarz.Controllers
         // GET: Visit/Edit/5
         public ActionResult Edit(int id)
         {
-            return View();
+            VisitModel model = _visitService.GetVisit(id);
+            return View(model);
         }
 
         // POST: Visit/Edit/5
