@@ -15,11 +15,13 @@ namespace dotnetlekarz.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private readonly IVisitService _visitService;
+        private readonly IUserService _userService;
 
-        public VisitController(ILogger<HomeController> logger, IVisitService service)
+        public VisitController(ILogger<HomeController> logger, IVisitService service, IUserService userService)
         {
             _logger = logger;
             _visitService = service;
+            _userService = userService;
         }
 
         // GET: Visit
@@ -37,7 +39,8 @@ namespace dotnetlekarz.Controllers
         // GET: Visit/Create
         public ActionResult Create()
         {
-            return View();
+            List<UserModel> doctors = _userService.GetAllUsers().FindAll(x => x.role.Equals(UserModel.Role.Doctor));
+            return View(doctors);
         }
 
         // POST: Visit/Create
@@ -81,10 +84,11 @@ namespace dotnetlekarz.Controllers
             }
         }
 
-        // GET: Visit/Delete/5
+        // DELETE: Visit/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            _visitService.RemoveVisit(id);
+            return RedirectToAction("Index", "Visit");
         }
 
         // POST: Visit/Delete/5
