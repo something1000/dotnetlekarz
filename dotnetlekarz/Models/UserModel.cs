@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,7 @@ namespace dotnetlekarz.Models
 
         public enum Role { Doctor, Visitor};
 
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int id { get; set; }
 
         public String name { get; set; }
@@ -32,6 +34,7 @@ namespace dotnetlekarz.Models
 
         public String password { get; set; }
 
+        [Column(TypeName = "nvarchar(24)")]
         public Role role { get; set; }
 
         public object Clone()

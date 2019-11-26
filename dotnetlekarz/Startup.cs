@@ -17,6 +17,10 @@ namespace dotnetlekarz
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            using (var db = new DocDbContext())
+            {
+                db.Database.EnsureCreated();
+            }
         }
 
         public IConfiguration Configuration { get; }
@@ -25,8 +29,10 @@ namespace dotnetlekarz
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddSingleton<IVisitService, VisitService>();
-            services.AddSingleton<IUserService, UserService>();
+            services.AddScoped<IVisitService, VisitService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddEntityFrameworkSqlite()
+                .AddDbContext<DocDbContext>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

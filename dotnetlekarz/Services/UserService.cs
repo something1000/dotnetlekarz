@@ -10,18 +10,14 @@ namespace dotnetlekarz.Services
     public class UserService : IUserService
     {
         //private static readonly UserService singletonUserService = new UserService();
-
+        private DocDbContext _dbContext { get; }
         private List<UserModel> users { get; }
         private int lastId = 0;
 
-        public UserService()
+        public UserService(DocDbContext dbContext)
         {
+            _dbContext = dbContext;
             users = new List<UserModel>();
-            AddUser(new UserModel("Jan", "Kowalski", "jkowalski", "123", UserModel.Role.Doctor));
-            AddUser(new UserModel("Wojciech", "Rzezucha", "wrzezucha", "123", UserModel.Role.Doctor));
-            AddUser(new UserModel("Bart", "Gawrych", "bgawrych", "123", UserModel.Role.Visitor));
-            AddUser(new UserModel("Adam", "Grabowski", "agrabowski", "123", UserModel.Role.Visitor));
-            AddUser(new UserModel("Kamil", "Jablonski", "kjablonski", "123", UserModel.Role.Visitor));
         }
 
         //public static UserService GetInstance()
@@ -31,16 +27,19 @@ namespace dotnetlekarz.Services
 
         public void AddUser(UserModel user)
         {
-            user.id = Interlocked.Increment(ref lastId);
+            //user.id = Interlocked.Increment(ref lastId);
             users.Add(user);
+            _dbContext.Users.Add(user);
+            _dbContext.SaveChanges();
         }
 
         public bool RemoveUser(int id)
         {
-            var toRemove = users.Find(x => x.id == id);
+            var toRemove = _dbContext.Users.Find(id);
             if(toRemove != null)
             {
-                users.Remove(toRemove);
+                _dbContext.Remove(toRemove);
+                _dbContext.SaveChanges();
                 return true;
             }
             return false;
@@ -48,41 +47,40 @@ namespace dotnetlekarz.Services
 
         public void ModifyUser(UserModel user)
         {
-            var foundUser = users.FindIndex(x => x.id == user.id);
-            if(foundUser >= 0)
-            {
-                users[foundUser] = user;
-            }
+            _dbContext.Update(user);
+            //var foundUser = users.FindIndex(x => x.id == user.id);
+            //if(foundUser >= 0)
+            //{
+            //    users[foundUser] = user;
+            //}
+            _dbContext.SaveChanges();
         }
 
         public UserModel GetUser(int id)
         {
-            var foundUser = users.Find(v => v.id == id);
-            if(foundUser == null)
-            {
-                return null;
-            }
-            return (UserModel)foundUser.Clone();
+            var foundUser = _dbContext.Users.Find(id);
+            //if(foundUser == null)
+            //{
+            //    return null;
+            //}
+            return foundUser;
         }
 
         public List<UserModel> GetAllUsers()
         {
-            List<UserModel> listCopy = new List<UserModel>();
-            users.ForEach(v =>
-            {
-                listCopy.Add((UserModel)v.Clone());
-            });
+            List<UserModel> listCopy = _dbContext.Users.ToList();
+
             return listCopy;
         }
 
         public UserModel GetUserByLogin(string login)
         {
-            var foundUser = users.Find(v => v.login.Equals(login));
+            var foundUser = _dbContext.Users.Where(v => v.login.Equals(login)).FirstOrDefault();
             if (foundUser == null)
             {
                 return null;
             }
-            return (UserModel)foundUser.Clone();
+            return foundUser;
         }
     }
 }
