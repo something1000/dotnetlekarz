@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using dotnetlekarz.Models;
 using dotnetlekarz.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace dotnetlekarz.Controllers
 {
@@ -27,8 +28,10 @@ namespace dotnetlekarz.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Doctor")]
         public IActionResult Privacy()
         {
+            Console.WriteLine(HttpContext.User.Claims);
             return View(_visitService.GetAllVisits());
         }
 

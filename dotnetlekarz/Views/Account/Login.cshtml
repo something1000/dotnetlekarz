@@ -2,12 +2,29 @@
 @{
     ViewData["Title"] = "Login";
 }
-<h1>Formularz logowania</h1>
 
-<form asp-controller="Account" asp-action="Submit">
-  Login:<br>
-  <input type="text" name="login"><br>
-  Password:<br>
-  <input type="text" name="password"><br>
-  <input type="submit">
-</form>
+@model User
+<div class="container">
+    <h1 class="text-capitalize text-center">Formularz logowania</h1>
+    <div class="row">
+        <div class="col-4 offset-4">
+            <form asp-controller="Account" asp-action="Login" method="post">
+                <div class="form-group row">
+                    <label for="login" class="col-4 col-form-label">Login</label>
+                    <input type="text" class="form-control col-8" id="login" name="login" aria-describedby="login" placeholder="Enter Login">
+                    <small class="text-danger text-center">@Html.ValidationMessageFor(u => u.Login, "")</small>
+                </div>
+                <div class="form-group row">
+                    <label for="password" class="col-4 col-form-label">Password</label>
+                    <input type="password" class="form-control col-8" id="password" name="password" placeholder="Password">
+                </div>
+                <div class="form-group row">
+                    <small class="text-danger text-center">@Html.ValidationSummary(true)</small>
+                    <button type="submit" class="btn btn-primary col-12 form-">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

@@ -19,7 +19,7 @@
                     <label for="date" class="col-sm-3 col-form-label">Wybierz dzień</label>
                     <input type="date" id="date" name="date"
                            value="@Model.DateTime.ToString("yyyy-MM-dd")"
-                           min="@Model.DateTime.ToString("yyyy-MM-dd")" />
+                           min="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 </div>
 
                 <input id="doctor" name="doctor"

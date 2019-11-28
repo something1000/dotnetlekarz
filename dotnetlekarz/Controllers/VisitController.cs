@@ -24,10 +24,15 @@ namespace dotnetlekarz.Controllers
             _userService = userService;
         }
 
+        private string GetUserName()
+        {
+            return HttpContext.User.Identity.Name;
+        }
+
         // GET: Visit
         public ActionResult Index()
         {
-            return View(_visitService.GetAllVisits());
+            return View(_visitService.GetVisitsByVisitor(GetUserName()));
         }
 
         // GET: Visit/Details/5
@@ -76,7 +81,7 @@ namespace dotnetlekarz.Controllers
             {
                 // TODO: Add insert logic here
                 User doctor = _userService.GetUserByLogin(collection["docLogin"].ToString());
-                User visitor = _userService.GetUserByLogin("kjablonski"); ///////////////////////////// zmienić jak będzie logowanie
+                User visitor = _userService.GetUserByLogin(GetUserName());
                 string onlyDate = collection["date"].ToString().Split(" ")[0];
                 DateTime date = Convert.ToDateTime(onlyDate + (" ") + collection["hour"].ToString() + ":00");
 

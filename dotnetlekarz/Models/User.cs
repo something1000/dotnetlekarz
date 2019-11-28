@@ -1,7 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Cryptography.KeyDerivation;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace dotnetlekarz.Models
@@ -31,6 +34,7 @@ namespace dotnetlekarz.Models
 
         public String Surname { get; set; }
 
+        [Required]
         public String Login { get; set; }
 
         public String Password { get; set; }
@@ -54,6 +58,30 @@ namespace dotnetlekarz.Models
             clone.Password = this.Password;
             clone.UserRole = this.UserRole;
             return clone;
+        }
+
+        public String getUserRole()
+        {
+            switch (UserRole)
+            {
+                case Role.Doctor:
+                    return "Doctor";
+                case Role.Visitor:
+                    return "Visitor";
+                default:
+                    return null;
+            }
+        }
+
+        public static String HashPassword(string password)
+        {
+            string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(
+            password: password,
+            salt: Encoding.ASCII.GetBytes("NZsP6NnmfBuYeJrrAKNuVQ=="),
+            prf: KeyDerivationPrf.HMACSHA1,
+            iterationCount: 1000,
+            numBytesRequested: 256 / 8));
+            return hashed;
         }
     }
 }

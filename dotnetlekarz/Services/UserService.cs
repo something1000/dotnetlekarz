@@ -1,7 +1,9 @@
 ﻿using dotnetlekarz.Models;
+using Microsoft.AspNetCore.Cryptography.KeyDerivation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -27,6 +29,7 @@ namespace dotnetlekarz.Services
         public void AddUser(User user)
         {
             //user.id = Interlocked.Increment(ref lastId);
+            user.Password = User.HashPassword(user.Password);
             users.Add(user);
             _dbContext.Users.Add(user);
             _dbContext.SaveChanges();
@@ -46,6 +49,7 @@ namespace dotnetlekarz.Services
 
         public void ModifyUser(User user)
         {
+            /// co z haslem [TODO]
             _dbContext.Update(user);
             //var foundUser = users.FindIndex(x => x.id == user.id);
             //if(foundUser >= 0)
