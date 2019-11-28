@@ -24,15 +24,15 @@
     @foreach (var visit in Model)
     {
         <tr class="bg-dark text-white">
-            <td>@visit.doctor.surname @visit.doctor.name</td>
-            <td>@visit.dateTime.ToString("dd.MM.yyyy")</td>
-            <td>@visit.dateTime.ToString("HH:mm")</td>
+            <td>@visit.Doctor.Surname @visit.Doctor.Name</td>
+            <td>@visit.DateTime.ToString("dd.MM.yyyy")</td>
+            <td>@visit.DateTime.ToString("HH:mm")</td>
             <td>
-                <button class="btn" onclick="location.href='@Url.Action("Edit", "Visit", new { id = visit.id })'">
+                <button class="btn" onclick="location.href='@Url.Action("Edit", "Visit", new { id = visit.VisitId })'">
                     <i class="fa fa-calendar" style="color: white;"></i>
                 </button>
             </td>
-            <td><button class="btn" onclick="location.href='@Url.Action("Delete", "Visit", new { id = visit.id })'"><i class="fa fa-trash" style="color: white;"></i></button></td>
+            <td><button class="btn" onclick="location.href='@Url.Action("Delete", "Visit", new { id = visit.VisitId })'"><i class="fa fa-trash" style="color: white;"></i></button></td>
         </tr>
     }
 </table>

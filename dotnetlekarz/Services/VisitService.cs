@@ -2,16 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
 namespace dotnetlekarz.Services
 {
     public class VisitService : IVisitService
     {
         //private static readonly VisitService singletonVisitService = new VisitService();
-        private List<VisitModel> visits { get; }
-        private int lastId = 0;
+        private List<Visit> visits { get; }
 
         private IUserService userService;
         private DocDbContext _dbContext { get; }
@@ -20,19 +17,21 @@ namespace dotnetlekarz.Services
             _dbContext = dbContext;
             this.userService = userService;
 
-            visits = new List<VisitModel>();
+            visits = new List<Visit>();
 
+            if (_dbContext.Users.Count() == 0 && _dbContext.Visits.Count() == 0)
+            {
+                userService.AddUser(new User("Jan", "Kowalski", "jkowalski", "123", User.Role.Doctor));
+                userService.AddUser(new User("Wojciech", "Rzezucha", "wrzezucha", "123", User.Role.Doctor));
+                userService.AddUser(new User("Bart", "Gawrych", "bgawrych", "123", User.Role.Visitor));
+                userService.AddUser(new User("Adam", "Grabowski", "agrabowski", "123", User.Role.Visitor));
+                userService.AddUser(new User("Kamil", "Jablonski", "kjablonski", "123", User.Role.Visitor));
 
-            userService.AddUser(new UserModel("Jan", "Kowalski", "jkowalski", "123", UserModel.Role.Doctor));
-            userService.AddUser(new UserModel("Wojciech", "Rzezucha", "wrzezucha", "123", UserModel.Role.Doctor));
-            userService.AddUser(new UserModel("Bart", "Gawrych", "bgawrych", "123", UserModel.Role.Visitor));
-            userService.AddUser(new UserModel("Adam", "Grabowski", "agrabowski", "123", UserModel.Role.Visitor));
-            userService.AddUser(new UserModel("Kamil", "Jablonski", "kjablonski", "123", UserModel.Role.Visitor));
-
-            AddVisit(new VisitModel(userService.GetUserByLogin("jkowalski"), userService.GetUserByLogin("agrabowski"), DateTime.Now));
-            AddVisit(new VisitModel(userService.GetUserByLogin("jkowalski"), userService.GetUserByLogin("kjablonski"), DateTime.Now));
-            AddVisit(new VisitModel(userService.GetUserByLogin("wrzezucha"), userService.GetUserByLogin("bgawrych"), DateTime.Now));
-            AddVisit(new VisitModel(userService.GetUserByLogin("wrzezucha"), userService.GetUserByLogin("kjablonski"), DateTime.Now));
+                AddVisit(new Visit(userService.GetUserByLogin("jkowalski"), userService.GetUserByLogin("agrabowski"), DateTime.Now));
+                AddVisit(new Visit(userService.GetUserByLogin("jkowalski"), userService.GetUserByLogin("kjablonski"), DateTime.Now));
+                AddVisit(new Visit(userService.GetUserByLogin("wrzezucha"), userService.GetUserByLogin("bgawrych"), DateTime.Now));
+                AddVisit(new Visit(userService.GetUserByLogin("wrzezucha"), userService.GetUserByLogin("kjablonski"), DateTime.Now));
+            }
         }
 
         //public static VisitService GetInstance()
@@ -41,10 +40,10 @@ namespace dotnetlekarz.Services
         //}
 
 
-        public void AddVisit(VisitModel visit)
+        public void AddVisit(Visit visit)
         {
             //visit.id = Interlocked.Increment(ref lastId);
-            visits.Add(visit);
+            //visits.Add(visit);
             _dbContext.Visits.Add(visit);
             _dbContext.SaveChanges();
         }
@@ -61,7 +60,7 @@ namespace dotnetlekarz.Services
             return false;
         }
 
-        public void ModifyVisit(VisitModel visit)
+        public void ModifyVisit(Visit visit)
         {
             //var foundVisit = visits.(x => x.id == visit.id);
             //if(foundVisit >= 0)
@@ -71,9 +70,9 @@ namespace dotnetlekarz.Services
             _dbContext.Visits.Update(visit);
         }
 
-        public VisitModel GetVisit(int id)
+        public Visit GetVisit(int id)
         {
-            var foundVisit = _dbContext.Visits.Find(id);
+            var foundVisit = _dbContext.VisitsWithUsers.SingleOrDefault(v => v.VisitId == id);
             if(foundVisit == null)
             {
                 return null;
@@ -81,9 +80,9 @@ namespace dotnetlekarz.Services
             return foundVisit;
         }
 
-        public List<VisitModel> GetAllVisits()
+        public List<Visit> GetAllVisits()
         {
-            List<VisitModel> listCopy = _dbContext.Visits.ToList();
+            List<Visit> listCopy = _dbContext.VisitsWithUsers.ToList();
             //visits.ForEach(v =>
             //{
             //    listCopy.Add((VisitModel)v.Clone());

@@ -11,13 +11,12 @@ namespace dotnetlekarz.Services
     {
         //private static readonly UserService singletonUserService = new UserService();
         private DocDbContext _dbContext { get; }
-        private List<UserModel> users { get; }
-        private int lastId = 0;
+        private List<User> users { get; }
 
         public UserService(DocDbContext dbContext)
         {
             _dbContext = dbContext;
-            users = new List<UserModel>();
+            users = new List<User>();
         }
 
         //public static UserService GetInstance()
@@ -25,7 +24,7 @@ namespace dotnetlekarz.Services
         //    return singletonUserService;
         //}
 
-        public void AddUser(UserModel user)
+        public void AddUser(User user)
         {
             //user.id = Interlocked.Increment(ref lastId);
             users.Add(user);
@@ -45,7 +44,7 @@ namespace dotnetlekarz.Services
             return false;
         }
 
-        public void ModifyUser(UserModel user)
+        public void ModifyUser(User user)
         {
             _dbContext.Update(user);
             //var foundUser = users.FindIndex(x => x.id == user.id);
@@ -56,7 +55,7 @@ namespace dotnetlekarz.Services
             _dbContext.SaveChanges();
         }
 
-        public UserModel GetUser(int id)
+        public User GetUser(int id)
         {
             var foundUser = _dbContext.Users.Find(id);
             //if(foundUser == null)
@@ -66,16 +65,16 @@ namespace dotnetlekarz.Services
             return foundUser;
         }
 
-        public List<UserModel> GetAllUsers()
+        public List<User> GetAllUsers()
         {
-            List<UserModel> listCopy = _dbContext.Users.ToList();
+            List<User> listCopy = _dbContext.Users.ToList();
 
             return listCopy;
         }
 
-        public UserModel GetUserByLogin(string login)
+        public User GetUserByLogin(string login)
         {
-            var foundUser = _dbContext.Users.Where(v => v.login.Equals(login)).FirstOrDefault();
+            var foundUser = _dbContext.Users.Where(v => v.Login.Equals(login)).FirstOrDefault();
             if (foundUser == null)
             {
                 return null;

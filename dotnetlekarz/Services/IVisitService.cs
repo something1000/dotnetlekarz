@@ -8,15 +8,15 @@ namespace dotnetlekarz.Services
 {
     public interface IVisitService
     {
-        void AddVisit(VisitModel visit);
+        void AddVisit(Visit visit);
 
         bool RemoveVisit(int id);
 
-        void ModifyVisit(VisitModel visit);
+        void ModifyVisit(Visit visit);
 
 
-        VisitModel GetVisit(int id);
+        Visit GetVisit(int id);
 
-        List<VisitModel> GetAllVisits();
+        List<Visit> GetAllVisits();
     }
 }

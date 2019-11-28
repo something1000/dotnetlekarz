@@ -39,7 +39,7 @@ namespace dotnetlekarz.Controllers
         // GET: Visit/Create
         public ActionResult Create()
         {
-            List<UserModel> doctors = _userService.GetAllUsers().FindAll(x => x.role.Equals(UserModel.Role.Doctor));
+            List<User> doctors = _userService.GetAllUsers().FindAll(x => x.UserRole.Equals(Models.User.Role.Doctor));
             return View(doctors);
         }
 
@@ -63,7 +63,7 @@ namespace dotnetlekarz.Controllers
         // GET: Visit/Edit/5
         public ActionResult Edit(int id)
         {
-            VisitModel model = _visitService.GetVisit(id);
+            Visit model = _visitService.GetVisit(id);
             return View(model);
         }
 

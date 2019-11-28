@@ -10,8 +10,9 @@ namespace dotnetlekarz.Services
 {
     public class DocDbContext : DbContext
     {
-        public DbSet<UserModel> Users{ get; set; }
-        public DbSet<VisitModel> Visits { get; set; }
+        public DbSet<User> Users{ get; set; }
+        public DbSet<Visit> Visits { get; set; }
+        public IQueryable<Visit> VisitsWithUsers => this.Visits.Include(x => x.Doctor).Include(x => x.Visitor);
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseSqlite("Data Source=docvisit.db");

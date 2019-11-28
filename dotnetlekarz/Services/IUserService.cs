@@ -8,15 +8,15 @@ namespace dotnetlekarz.Services
 {
     public interface IUserService
     {
-        void AddUser(UserModel user);
+        void AddUser(User user);
 
         bool RemoveUser(int id);
 
-        void ModifyUser(UserModel user);
+        void ModifyUser(User user);
 
-        UserModel GetUser(int id);
-        UserModel GetUserByLogin(String login);
+        User GetUser(int id);
+        User GetUserByLogin(String login);
 
-        List<UserModel> GetAllUsers();
+        List<User> GetAllUsers();
     }
 }
