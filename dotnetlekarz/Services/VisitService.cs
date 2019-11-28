@@ -89,5 +89,11 @@ namespace dotnetlekarz.Services
             //});
             return listCopy;
         }
+
+        public List<Visit> GetVisitsDocDate(User doctor, DateTime date)
+        {
+            List <Visit> visits = _dbContext.Visits.Where(x => x.Doctor.UserId == doctor.UserId).Where(y => y.DateTime.Date == date.Date).ToList();
+            return visits;
+        }
     }
 }

@@ -81,5 +81,15 @@ namespace dotnetlekarz.Services
             }
             return foundUser;
         }
+
+        public User GetUserByID(int id)
+        {
+            var foundUser = _dbContext.Users.Where(v => v.UserId.Equals(id)).FirstOrDefault();
+            if (foundUser == null)
+            {
+                return null;
+            }
+            return foundUser;
+        }
     }
 }

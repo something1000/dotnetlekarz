@@ -16,7 +16,7 @@ namespace dotnetlekarz.Services
 
         User GetUser(int id);
         User GetUserByLogin(String login);
-
+        User GetUserByID(int id);
         List<User> GetAllUsers();
     }
 }

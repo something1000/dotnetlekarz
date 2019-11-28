@@ -9,38 +9,28 @@
             <h1>Zapisz się na wizytę</h1>
         </div>
         <div class="col-4 offset-4">
-            <form method="post" asp-controller="Visit" asp-action="Create">
+            <form method="post" asp-controller="Visit" asp-action="ChooseDate">
                 <div class="form-group row">
                     <label for="doctor" class="col-sm-3 col-form-label">Lekarz</label>
                     <select name="doctor" class="form-control col-9" id="doctor">
                         @foreach (var doc in Model)
                         {
-                            <option value="@doc.UserId">@doc.Surname @doc.Name</option>
+                            <option value="@doc.Login">@doc.Surname @doc.Name</option>
                         }
                     </select>
                 </div>
 
                 <div class="form-group row">
                     <label for="date" class="col-sm-3 col-form-label">Wybierz dzień</label>
-                    <input type="date" id="date" name="trip-start"
+                    <input type="date" id="date" name="date"
                            value="@DateTime.Now.ToString("yyyy-MM-dd")"
-                           min="2018-01-01" max="2018-12-31" />
+                           min="@DateTime.Now.ToString("yyyy-MM-dd")" />
                 </div>
 
-                <div class="form-group row">
-                    <label for="hour" class="col-sm-3 col-form-label">Wybierz godzinę</label>
-                    <select name="hour" class="form-control col-9" id="hour">
-                        @foreach (var doc in Model)
-                        {
-                            <option value="@doc.UserId">@doc.Surname @doc.Name</option>
-                        }
-                    </select>
-                    <input type="date" id="hour" name="trip-start"
-                           value="@DateTime.Now.ToString("yyyy-MM-dd")"
-                           min="2018-01-01" max="2018-12-31" />
-                </div>
+                <input id="edit" name="edit"
+                       value="-1" hidden />
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <button type="submit" class="btn btn-primary">Dalej</button>
             </form>
         </div>
     </div>

@@ -1,0 +1,31 @@
+﻿
+@{
+    ViewData["Title"] = "Test";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>Wybierz godzinę wizyty</h1>
+        </div>
+        <div class="col-4 offset-4">
+            <form method="post" asp-controller="Visit" asp-action="Create">
+                <div class="form-group row">
+                    <label for="doctor" class="col-sm-3 col-form-label">Godzina</label>
+                    <select name="hour" class="form-control col-9" id="hour">
+                        @foreach (var h in Model)
+                        {
+                            <option value="@h">@h</option>
+                        }
+                    </select>
+                </div>
+
+                <input id="docLogin" name="docLogin" value="@TempData["docLogin"]" hidden/>
+                <input id="date" name="date" value="@TempData["date"]" hidden/>
+                <input id="edit" name="edit" value="@TempData["edit"]" hidden/>
+               
+                <button type="submit" class="btn btn-primary">Zapisz</button>
+            </form>
+        </div>
+    </div>
+</div>
