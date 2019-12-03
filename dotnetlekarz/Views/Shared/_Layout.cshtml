@@ -32,17 +32,29 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Visit" asp-action="Index">Wizyty</a>
                         </li>
                         @if (!User.Identity.IsAuthenticated)
-                            {
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Zaloguj</a>
                             </li>
-                            }
+                        }
                         else
-                            {
+                        {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Wyloguj</a>
                             </li>
+                            @if (User.IsInRole("Doctor"))
+                            {
+                                <li class="nav-item ">
+                                    <a class="nav-link text-dark">Doktor: @User.Identity.Name</a>
+                                </li>
                             }
+                            @if (User.IsInRole("Visitor"))
+                            {
+                                <li class="nav-item ">
+                                    <a class="nav-link text-dark">Pacjent: @User.Identity.Name</a>
+                                </li>
+                            }
+                        }
                     </ul>
                 </div>
             </div>

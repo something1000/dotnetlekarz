@@ -92,9 +92,16 @@ namespace dotnetlekarz.Services
 
         public List<Visit> GetVisitsByVisitor(string visitorLogin)
         {
-            List<Visit> listCopy = _dbContext.VisitsWithUsers.Where(v => v.Visitor.Login == visitorLogin).ToList();
+            List<Visit> visits = _dbContext.VisitsWithUsers.Where(v => v.Visitor.Login == visitorLogin).ToList();
             
-            return listCopy;
+            return visits;
+        }
+
+        public List<Visit> GetVisitsByDoctor(string doctorLogin)
+        {
+            List<Visit> visits = _dbContext.VisitsWithUsers.Where(v => v.Doctor.Login == doctorLogin).ToList();
+
+            return visits;
         }
 
         public List<Visit> GetVisitsDocDate(User doctor, DateTime date)

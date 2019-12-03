@@ -32,6 +32,8 @@ namespace dotnetlekarz.Controllers
         // GET: Visit
         public ActionResult Index()
         {
+            if (HttpContext.User.IsInRole("Doctor"))
+                return View(viewName: "DocVisits", model: _visitService.GetVisitsByDoctor(GetUserName()));
             return View(_visitService.GetVisitsByVisitor(GetUserName()));
         }
 
@@ -51,6 +53,9 @@ namespace dotnetlekarz.Controllers
         // GET: Visit/Hour
         public ActionResult Hour()
         {
+            if (TempData["docLogin"] == null || TempData["date"] == null)
+                return RedirectToAction(nameof(Create));
+
             User doctor = _userService.GetUserByLogin(TempData["docLogin"].ToString());
             DateTime date = Convert.ToDateTime(TempData["date"].ToString());
             List < Visit > visits = _visitService.GetVisitsDocDate(doctor, date);
@@ -69,6 +74,11 @@ namespace dotnetlekarz.Controllers
             TempData.Peek("date");
             TempData.Peek("docLogin");
             TempData.Peek("edit");
+            if (HttpContext.User.IsInRole("Doctor"))
+            {
+                TempData.Peek("visitorLogin");
+            }
+
             return View(viewName: "VisitHour", model: hours);
         }
 
@@ -79,9 +89,17 @@ namespace dotnetlekarz.Controllers
         {
             try
             {
-                // TODO: Add insert logic here
-                User doctor = _userService.GetUserByLogin(collection["docLogin"].ToString());
-                User visitor = _userService.GetUserByLogin(GetUserName());
+                User visitor, doctor;
+                if (HttpContext.User.IsInRole("Doctor"))
+                {
+                    visitor = _userService.GetUserByLogin(collection["visitorLogin"].ToString());
+                    doctor = _userService.GetUserByLogin(GetUserName());
+                }
+                else
+                {
+                    doctor = _userService.GetUserByLogin(collection["docLogin"].ToString());
+                    visitor = _userService.GetUserByLogin(GetUserName());
+                }
                 string onlyDate = collection["date"].ToString().Split(" ")[0];
                 DateTime date = Convert.ToDateTime(onlyDate + (" ") + collection["hour"].ToString() + ":00");
 
@@ -111,6 +129,11 @@ namespace dotnetlekarz.Controllers
                 TempData["docLogin"] = collection["doctor"].ToString();
                 TempData["date"] = collection["date"].ToString();
                 TempData["edit"] = collection["edit"].ToString();
+
+                if (HttpContext.User.IsInRole("Doctor"))
+                {
+                    TempData["visitorLogin"] = collection["visitor"].ToString();
+                }
 
                 return RedirectToAction(nameof(Hour));
             }

@@ -20,5 +20,6 @@ namespace dotnetlekarz.Services
         List<Visit> GetAllVisits();
         List<Visit> GetVisitsDocDate(User doctor, DateTime date);
         List<Visit> GetVisitsByVisitor(string visitorLogin);
+        List<Visit> GetVisitsByDoctor(string doctorLogin);
     }
 }
