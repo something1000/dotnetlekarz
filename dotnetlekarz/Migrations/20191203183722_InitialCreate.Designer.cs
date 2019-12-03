@@ -9,7 +9,7 @@ using dotnetlekarz.Services;
 namespace dotnetlekarz.Migrations
 {
     [DbContext(typeof(DocDbContext))]
-    [Migration("20191128165102_InitialCreate")]
+    [Migration("20191203183722_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,6 +25,7 @@ namespace dotnetlekarz.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Login")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")

@@ -18,10 +18,12 @@ namespace dotnetlekarz.Controllers
     {
         private bool loggedIn = false;
         private IUserService _userService { get; set; }
+        private IVisitService _visitService { get; set; }
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, IVisitService visitService)
         {
             _userService = userService;
+            _visitService = visitService;
         }
 
         public IActionResult Index()

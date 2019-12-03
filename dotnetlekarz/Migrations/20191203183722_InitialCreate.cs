@@ -15,7 +15,7 @@ namespace dotnetlekarz.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Name = table.Column<string>(nullable: true),
                     Surname = table.Column<string>(nullable: true),
-                    Login = table.Column<string>(nullable: true),
+                    Login = table.Column<string>(nullable: false),
                     Password = table.Column<string>(nullable: true),
                     UserRole = table.Column<int>(nullable: false)
                 },

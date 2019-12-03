@@ -23,6 +23,7 @@ namespace dotnetlekarz.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Login")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
