@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using dotnetlekarz.Models;
 using dotnetlekarz.Services;
 using Microsoft.AspNetCore.Authorization;
+using IronPdf;
+using System.Text;
 
 namespace dotnetlekarz.Controllers
 {
@@ -16,11 +18,13 @@ namespace dotnetlekarz.Controllers
         private readonly ILogger<HomeController> _logger;
 
         private readonly IVisitService _visitService;
+        private readonly IUserService _userService;
 
-        public HomeController(ILogger<HomeController> logger, IVisitService service)
+        public HomeController(ILogger<HomeController> logger, IVisitService service, IUserService userService)
         {
             _logger = logger;
             _visitService = service;
+            _userService = userService;
         }
 
         public IActionResult Index()

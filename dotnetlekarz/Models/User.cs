@@ -73,6 +73,11 @@ namespace dotnetlekarz.Models
             }
         }
 
+        public String FullName()
+        {
+            return Name + " " + Surname;
+        }
+
         public static String HashPassword(string password)
         {
             string hashed = Convert.ToBase64String(KeyDerivation.Pbkdf2(

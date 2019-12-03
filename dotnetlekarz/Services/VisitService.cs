@@ -7,7 +7,6 @@ namespace dotnetlekarz.Services
 {
     public class VisitService : IVisitService
     {
-        //private static readonly VisitService singletonVisitService = new VisitService();
         private List<Visit> visits { get; }
 
         private IUserService userService;
@@ -34,16 +33,9 @@ namespace dotnetlekarz.Services
             }
         }
 
-        //public static VisitService GetInstance()
-        //{
-        //    return singletonVisitService;
-        //}
-
 
         public void AddVisit(Visit visit)
         {
-            //visit.id = Interlocked.Increment(ref lastId);
-            //visits.Add(visit);
             _dbContext.Visits.Add(visit);
             _dbContext.SaveChanges();
         }
@@ -62,11 +54,6 @@ namespace dotnetlekarz.Services
 
         public void ModifyVisit(Visit visit)
         {
-            //var foundVisit = visits.(x => x.id == visit.id);
-            //if(foundVisit >= 0)
-            //{
-            //    visits[foundVisit] = visit;
-            //}
             _dbContext.Visits.Update(visit);
         }
 
@@ -82,31 +69,47 @@ namespace dotnetlekarz.Services
 
         public List<Visit> GetAllVisits()
         {
-            List<Visit> listCopy = _dbContext.VisitsWithUsers.ToList();
-            //visits.ForEach(v =>
-            //{
-            //    listCopy.Add((VisitModel)v.Clone());
-            //});
-            return listCopy;
+            List<Visit> visits = _dbContext.VisitsWithUsers.ToList();
+
+            return visits;
         }
 
         public List<Visit> GetVisitsByVisitor(string visitorLogin)
         {
             List<Visit> visits = _dbContext.VisitsWithUsers.Where(v => v.Visitor.Login == visitorLogin).ToList();
-            
+
+            visits.Sort((a, b) => {
+                TimeSpan d = a.DateTime - b.DateTime;
+
+                return (int)d.TotalSeconds;
+            });
+
             return visits;
         }
 
         public List<Visit> GetVisitsByDoctor(string doctorLogin)
         {
-            List<Visit> visits = _dbContext.VisitsWithUsers.Where(v => v.Doctor.Login == doctorLogin).ToList();
+            List<Visit> visits = _dbContext.VisitsWithUsers.Where(v => v.Doctor.Login == doctorLogin)
+                                                           .ToList();
+            visits.Sort((a, b) => {
+                TimeSpan d = a.DateTime - b.DateTime;
+
+                return (int)d.TotalSeconds;
+            });
 
             return visits;
         }
 
         public List<Visit> GetVisitsDocDate(User doctor, DateTime date)
         {
-            List <Visit> visits = _dbContext.Visits.Where(x => x.Doctor.UserId == doctor.UserId).Where(y => y.DateTime.Date == date.Date).ToList();
+            List <Visit> visits = _dbContext.VisitsWithUsers.Where(x => x.Doctor.UserId == doctor.UserId).Where(y => y.DateTime.Date == date.Date).ToList();
+
+            visits.Sort((a, b) => {
+                TimeSpan d = a.DateTime - b.DateTime;
+
+                return (int)d.TotalSeconds;
+            });
+
             return visits;
         }
     }
