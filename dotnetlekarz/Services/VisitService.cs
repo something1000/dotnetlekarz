@@ -34,10 +34,10 @@ namespace dotnetlekarz.Services
         }
 
 
-        public void AddVisit(Visit visit)
+        public int AddVisit(Visit visit)
         {
             _dbContext.Visits.Add(visit);
-            _dbContext.SaveChanges();
+            return _dbContext.SaveChanges();
         }
 
         public bool RemoveVisit(int id)

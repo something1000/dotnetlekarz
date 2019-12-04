@@ -14,7 +14,7 @@ namespace dotnetlekarz.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.0.1");
+                .HasAnnotation("ProductVersion", "3.1.0");
 
             modelBuilder.Entity("dotnetlekarz.Models.User", b =>
                 {
@@ -60,9 +60,10 @@ namespace dotnetlekarz.Migrations
 
                     b.HasKey("VisitId");
 
-                    b.HasIndex("DoctorId");
-
                     b.HasIndex("VisitorId");
+
+                    b.HasIndex("DoctorId", "DateTime")
+                        .IsUnique();
 
                     b.ToTable("Visits");
                 });

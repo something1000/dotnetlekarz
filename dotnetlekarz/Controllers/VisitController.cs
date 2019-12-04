@@ -19,6 +19,9 @@ namespace dotnetlekarz.Controllers
         private readonly IVisitService _visitService;
         private readonly IUserService _userService;
 
+        private List<string> hours = new List<string>{ "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
+                                                   "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30" };
+
         public VisitController(ILogger<HomeController> logger, IVisitService service, IUserService userService)
         {
             _logger = logger;
@@ -62,13 +65,12 @@ namespace dotnetlekarz.Controllers
             DateTime date = Convert.ToDateTime(TempData["date"].ToString());
             List < Visit > visits = _visitService.GetVisitsDocDate(doctor, date);
 
-            List<string> hours = new List<string>{ "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
-                                                   "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30" };
+            List<string> availableHours = new List<string>(hours);
 
             foreach (Visit v in visits)
             {
                 string hour = v.DateTime.ToString("HH:mm");//.Split(" ")[1].Remove(5);
-                hours.RemoveAll(h => h.Equals(hour));
+                availableHours.RemoveAll(h => h.Equals(hour));
 
             }
 
@@ -80,16 +82,20 @@ namespace dotnetlekarz.Controllers
                 TempData.Peek("visitorLogin");
             }
 
-            return View(viewName: "VisitHour", model: hours);
+            return View(viewName: "VisitHour", model: availableHours);
         }
 
-        // POST: Visit/Create
+        // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
             try
             {
+                //WALIDACJA
+                if (!hours.Contains(collection["hour"].ToString()))
+                    TempData["validationHour"] = "Wybierz godzinę z listy";
+
                 User visitor, doctor;
                 if (HttpContext.User.IsInRole("Doctor"))
                 {
@@ -101,10 +107,23 @@ namespace dotnetlekarz.Controllers
                     doctor = _userService.GetUserByLogin(collection["docLogin"].ToString());
                     visitor = _userService.GetUserByLogin(GetUserName());
                 }
+
+                //Błędy walidacji
+                if (TempData["validationHour"] != null)
+                {
+                    TempData["docLogin"] = collection["docLogin"].ToString();
+                    TempData["date"] = collection["date"].ToString();
+                    TempData["edit"] = collection["edit"].ToString();
+                    if (HttpContext.User.IsInRole("Doctor"))
+                        TempData["visitorLogin"] = collection["visitorLogin"].ToString();
+                    return RedirectToAction(nameof(Hour));
+                }
+
                 string onlyDate = collection["date"].ToString().Split(" ")[0];
                 DateTime date = Convert.ToDateTime(onlyDate + (" ") + collection["hour"].ToString() + ":00");
 
                 _visitService.AddVisit(new Visit(doctor, visitor, date));
+                
 
                 if (!collection["edit"].ToString().Equals("-1"))    // znaczy że to była edycja 
                 {
@@ -113,20 +132,46 @@ namespace dotnetlekarz.Controllers
 
                 return RedirectToAction(nameof(Index));
             }
-            catch
+            catch (Microsoft.EntityFrameworkCore.DbUpdateException)
             {
-                return RedirectToAction(nameof(Index));
+                TempData["noAdd"] = "Wybrana godzina jest już zajęta, proszę wybrać inną";
+                TempData["docLogin"] = collection["docLogin"].ToString();
+                TempData["date"] = collection["date"].ToString();
+                TempData["edit"] = collection["edit"].ToString();
+                if(HttpContext.User.IsInRole("Doctor"))
+                    TempData["visitorLogin"] = collection["visitorLogin"].ToString();
+                return RedirectToAction(nameof(Hour));
             }
         }
 
-        // POST: Visit/Create
+        // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ChooseDate(IFormCollection collection)
         {
             try
             {
-                // TODO: Add insert logic here
+                //WALIDACJA
+                List<User> doctors = _userService.GetAllUsers().FindAll(x => x.UserRole.Equals(Models.User.Role.Doctor));
+                foreach (User d in doctors)
+                {
+                    if (d.Login.Equals(collection["doctor"].ToString()))
+                        break;
+                    TempData["validationDoctor"] = "Wybierz doktora z listy";
+                }
+                try
+                {
+                    DateTime MyDateTime = DateTime.ParseExact(collection["date"].ToString(), "yyyy-MM-dd", null);
+                    if (MyDateTime.CompareTo(DateTime.Now) <= 0)
+                        TempData["validationDate"] = "Najbliższy możliwy termin zapisu to: " + DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+                    else if (MyDateTime.DayOfWeek == DayOfWeek.Saturday || MyDateTime.DayOfWeek == DayOfWeek.Sunday)
+                        TempData["validationDate"] = "Przychodnia czynna tylko od poniedziałku do piątku";
+                }
+                catch
+                {
+                    TempData["validationDate"] = "Poprawny format daty to: DD.MM.YYYY";
+                }
+
                 TempData["docLogin"] = collection["doctor"].ToString();
                 TempData["date"] = collection["date"].ToString();
                 TempData["edit"] = collection["edit"].ToString();
@@ -135,12 +180,20 @@ namespace dotnetlekarz.Controllers
                 {
                     TempData["visitorLogin"] = collection["visitor"].ToString();
                 }
+                
+                //Błędy walidacji
+                if (TempData["validationDoctor"] != null || TempData["validationDate"] != null)
+                {
+                    if (!collection["edit"].ToString().Equals("-1"))    // znaczy że to była edycja
+                        return RedirectToAction(nameof(Edit), new { id = collection["edit"] });
+                    return RedirectToAction(nameof(Create));
+                }
 
                 return RedirectToAction(nameof(Hour));
             }
             catch
             {
-                return View();
+                return RedirectToAction(nameof(Create));
             }
         }
 

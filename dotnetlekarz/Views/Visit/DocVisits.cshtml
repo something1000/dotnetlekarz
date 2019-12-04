@@ -29,12 +29,24 @@
             <td>@visit.Visitor.Surname @visit.Visitor.Name</td>
             <td>@visit.DateTime.ToString("dd.MM.yyyy")</td>
             <td>@visit.DateTime.ToString("HH:mm")</td>
-            <td>
-                <button class="btn" onclick="location.href='@Url.Action("Edit", "Visit", new { id = visit.VisitId })'">
-                    <i class="fa fa-calendar" style="color: white;"></i>
-                </button>
-            </td>
-            <td><button class="btn" onclick="location.href='@Url.Action("Delete", "Visit", new { id = visit.VisitId })'"><i class="fa fa-trash" style="color: white;"></i></button></td>
+            @if (visit.DateTime.CompareTo(DateTime.Now) > 0)
+            {
+                <td>
+                    <button class="btn" onclick="location.href='@Url.Action("Edit", "Visit", new { id = visit.VisitId })'">
+                        <i class="fa fa-calendar" style="color: white;"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn" onclick="location.href='@Url.Action("Delete", "Visit", new { id = visit.VisitId })'">
+                        <i class="fa fa-trash" style="color: white;"></i>
+                    </button>
+                </td>
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
         </tr>
     }
 </table>

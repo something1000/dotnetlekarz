@@ -27,7 +27,11 @@
                     <label for="date" class="col-sm-3 col-form-label">Wybierz dzień</label>
                     <input type="date" id="date" name="date"
                            value="@Model.DateTime.ToString("yyyy-MM-dd")"
-                           min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+                           min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
+                    @if (TempData["validationDate"] != null)
+                    {
+                        <small class="col-12 form-text text-muted text-center alert alert-danger">@TempData["validationDate"]</small>
+                    }
                 </div>
 
                 <input id="doctor" name="doctor"
@@ -41,7 +45,7 @@
 
                 <button type="submit" class="btn btn-primary" style="float: right;">Dalej</button>
             </form>
-            <button onclick="history.go(-1)" class="btn btn-primary" style="float: left;">Cofnij</button>
+            <button onclick="location.href='@Url.Action("Index", "Visit")'" class="btn btn-primary" style="float: left;">Cofnij</button>
 
         </div>
     </div>

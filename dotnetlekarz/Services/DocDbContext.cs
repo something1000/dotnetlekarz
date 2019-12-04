@@ -17,5 +17,10 @@ namespace dotnetlekarz.Services
         {
             optionsBuilder.UseSqlite("Data Source=docvisit.db");
         }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Visit>()
+            .HasIndex(p => new { p.DoctorId, p.DateTime }).IsUnique();
+        }
     }
 }

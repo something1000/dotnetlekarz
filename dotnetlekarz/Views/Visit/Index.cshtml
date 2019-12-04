@@ -2,14 +2,15 @@
 @{
     ViewData["Title"] = "Wizyty";
 }
-    <div>
-        <div class="float-left">
-            <h1>Twoje wizyty</h1>
-        </div>
-        <div class="float-right">
-            <button class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Visit")'">Zapisz się na wizytę</button>
-        </div>
+
+<div>
+    <div class="float-left">
+        <h1>Twoje wizyty</h1>
     </div>
+    <div class="float-right">
+        <button class="btn btn-primary" onclick="location.href='@Url.Action("Create", "Visit")'">Zapisz się na wizytę</button>
+    </div>
+</div>
 <table class="table text-center">
     <caption>Twoje wizyty</caption>
     <thead>
@@ -27,12 +28,24 @@
             <td>@visit.Doctor.Surname @visit.Doctor.Name</td>
             <td>@visit.DateTime.ToString("dd.MM.yyyy")</td>
             <td>@visit.DateTime.ToString("HH:mm")</td>
-            <td>
-                <button class="btn" onclick="location.href='@Url.Action("Edit", "Visit", new { id = visit.VisitId })'">
-                    <i class="fa fa-calendar" style="color: white;"></i>
-                </button>
-            </td>
-            <td><button class="btn" onclick="location.href='@Url.Action("Delete", "Visit", new { id = visit.VisitId })'"><i class="fa fa-trash" style="color: white;"></i></button></td>
+            @if (visit.DateTime.CompareTo(DateTime.Now) > 0)
+            {
+                <td>
+                    <button class="btn" onclick="location.href='@Url.Action("Edit", "Visit", new { id = visit.VisitId })'">
+                        <i class="fa fa-calendar" style="color: white;"></i>
+                    </button>
+                </td>
+                <td>
+                    <button class="btn" onclick="location.href='@Url.Action("Delete", "Visit", new { id = visit.VisitId })'">
+                        <i class="fa fa-trash" style="color: white;"></i>
+                    </button>
+                </td>
+            }
+            else
+            {
+                <td></td>
+                <td></td>
+            }
         </tr>
     }
 </table>

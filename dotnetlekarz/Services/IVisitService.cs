@@ -8,7 +8,7 @@ namespace dotnetlekarz.Services
 {
     public interface IVisitService
     {
-        void AddVisit(Visit visit);
+        int AddVisit(Visit visit);
 
         bool RemoveVisit(int id);
 
