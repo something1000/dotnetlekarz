@@ -11,20 +11,27 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Logging;
 
 namespace dotnetlekarz.Controllers
 {
     [Route("Account")]
     public class AccountController : Controller
     {
-        private bool loggedIn = false;
+        private readonly ILogger<AccountController> _logger;
         private IUserService _userService { get; set; }
         private IVisitService _visitService { get; set; }
 
-        public AccountController(IUserService userService, IVisitService visitService)
+        public AccountController(ILogger<AccountController> logger, IUserService userService, IVisitService visitService)
         {
+            _logger = logger;
             _userService = userService;
             _visitService = visitService;
+        }
+
+        private string GetUserName()
+        {
+            return HttpContext.User.Identity.Name;
         }
 
         [HttpGet]
@@ -52,6 +59,7 @@ namespace dotnetlekarz.Controllers
                 try
                 {
                     _userService.AddUser(user);
+                    _logger.LogInformation("User: {login} has registered", user.Login);
                 }
                 catch (Microsoft.EntityFrameworkCore.DbUpdateException)
                 {
@@ -121,6 +129,7 @@ namespace dotnetlekarz.Controllers
                         CookieAuthenticationDefaults.AuthenticationScheme,
                         claimsPrincipal,
                         authProperties);
+                    _logger.LogInformation("User: {login} logged in", Login);
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -156,6 +165,7 @@ namespace dotnetlekarz.Controllers
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
+            _logger.LogInformation("User: {login} logged out", GetUserName());
             return RedirectToAction("Login", "Account");
         }
 

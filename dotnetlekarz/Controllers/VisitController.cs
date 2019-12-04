@@ -15,7 +15,7 @@ namespace dotnetlekarz.Controllers
     [Route("Visit")]
     public class VisitController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        private readonly ILogger<VisitController> _logger;
 
         private readonly IVisitService _visitService;
         private readonly IUserService _userService;
@@ -23,7 +23,7 @@ namespace dotnetlekarz.Controllers
         private List<string> hours = new List<string>{ "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
                                                    "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30" };
 
-        public VisitController(ILogger<HomeController> logger, IVisitService service, IUserService userService)
+        public VisitController(ILogger<VisitController> logger, IVisitService service, IUserService userService)
         {
             _logger = logger;
             _visitService = service;
@@ -95,7 +95,10 @@ namespace dotnetlekarz.Controllers
             {
                 //WALIDACJA
                 if (!hours.Contains(collection["hour"].ToString()))
+                {
+                    _logger.LogWarning("User: {login} tried to add visit with invalid hour", GetUserName());
                     TempData["validationHour"] = "Wybierz godzinę z listy";
+                }
 
                 User visitor, doctor;
                 if (HttpContext.User.IsInRole("Doctor"))
@@ -124,7 +127,6 @@ namespace dotnetlekarz.Controllers
                 DateTime date = Convert.ToDateTime(onlyDate + (" ") + collection["hour"].ToString() + ":00");
 
                 _visitService.AddVisit(new Visit(doctor, visitor, date));
-                
 
                 if (!collection["edit"].ToString().Equals("-1"))    // znaczy że to była edycja 
                 {
@@ -135,6 +137,7 @@ namespace dotnetlekarz.Controllers
             }
             catch (Microsoft.EntityFrameworkCore.DbUpdateException)
             {
+                _logger.LogError("User: {login} tried to add visit with reserved term", GetUserName());
                 TempData["noAdd"] = "Wybrana godzina jest już zajęta, proszę wybrać inną";
                 TempData["docLogin"] = collection["docLogin"].ToString();
                 TempData["date"] = collection["date"].ToString();
@@ -165,7 +168,10 @@ namespace dotnetlekarz.Controllers
                     }
                 }
                 if (!docExists)
+                {
+                    _logger.LogWarning("User: {login} tried to add visit to invalid doctor", GetUserName());
                     TempData["validationDoctor"] = "Wybierz doktora z listy";
+                }
                 try
                 {
                     DateTime MyDateTime = DateTime.ParseExact(collection["date"].ToString(), "yyyy-MM-dd", null);
