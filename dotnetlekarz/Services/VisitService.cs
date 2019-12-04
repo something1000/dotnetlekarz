@@ -102,7 +102,9 @@ namespace dotnetlekarz.Services
 
         public List<Visit> GetVisitsDocDate(User doctor, DateTime date)
         {
-            List <Visit> visits = _dbContext.VisitsWithUsers.Where(x => x.Doctor.UserId == doctor.UserId).Where(y => y.DateTime.Date == date.Date).ToList();
+            List <Visit> visits = _dbContext.VisitsWithUsers.Where(x => x.Doctor.UserId == doctor.UserId)
+                                                            .Where(y => y.DateTime.Date == date.Date)
+                                                            .ToList();
 
             visits.Sort((a, b) => {
                 TimeSpan d = a.DateTime - b.DateTime;

@@ -34,10 +34,12 @@ namespace dotnetlekarz
             {
                 options.Filters.Add(new AuthorizeFilter());
             });
+
             services.AddScoped<IVisitService, VisitService>();
             services.AddScoped<IUserService, UserService>();
             services.AddEntityFrameworkSqlite()
                 .AddDbContext<DocDbContext>();
+            services.AddOpenApiDocument();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
@@ -65,6 +67,7 @@ namespace dotnetlekarz
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+            
             app.UseRouting();
 
             app.UseAuthentication();
@@ -76,6 +79,8 @@ namespace dotnetlekarz
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
         }
     }
 }

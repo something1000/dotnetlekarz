@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace dotnetlekarz.Controllers
 {
+    [Route("Visit")]
     public class VisitController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -35,6 +36,8 @@ namespace dotnetlekarz.Controllers
         }
 
         // GET: Visit
+        [HttpGet]
+        [Route("Index")]
         public ActionResult Index()
         {
             if (HttpContext.User.IsInRole("Doctor"))
@@ -42,13 +45,9 @@ namespace dotnetlekarz.Controllers
             return View(_visitService.GetVisitsByVisitor(GetUserName()));
         }
 
-        // GET: Visit/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: Visit/Create
+        [Route("Create")]
         public ActionResult Create()
         {
             List<User> doctors = _userService.GetAllUsers().FindAll(x => x.UserRole.Equals(Models.User.Role.Doctor));
@@ -56,6 +55,7 @@ namespace dotnetlekarz.Controllers
         }
 
         // GET: Visit/Hour
+        [Route("Hour")]
         public ActionResult Hour()
         {
             if (TempData["docLogin"] == null || TempData["date"] == null)
@@ -88,6 +88,7 @@ namespace dotnetlekarz.Controllers
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Create")]
         public ActionResult Create(IFormCollection collection)
         {
             try
@@ -147,6 +148,7 @@ namespace dotnetlekarz.Controllers
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("ChooseData")]
         public ActionResult ChooseDate(IFormCollection collection)
         {
             try
@@ -199,6 +201,7 @@ namespace dotnetlekarz.Controllers
 
 
         // GET: Visit/Edit/5
+        [Route("Edit")]
         public ActionResult Edit(int id)
         {
             Visit model = _visitService.GetVisit(id);
@@ -208,6 +211,7 @@ namespace dotnetlekarz.Controllers
         // POST: Visit/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Edit")]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
@@ -223,6 +227,7 @@ namespace dotnetlekarz.Controllers
         }
 
         // DELETE: Visit/Delete/5
+        [Route("Delete")]
         public ActionResult Delete(int id)
         {
             _visitService.RemoveVisit(id);
@@ -232,6 +237,7 @@ namespace dotnetlekarz.Controllers
         // POST: Visit/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Route("Delete")]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
@@ -247,6 +253,7 @@ namespace dotnetlekarz.Controllers
         }
 
         [Authorize(Roles="Doctor")]
+        [Route("GenerateTodaysVisitsToPDF")]
         public IActionResult GenerateTodaysVisitsToPDF()
         {
             User user = _userService.GetUserByLogin(this.HttpContext.User.Identity.Name);

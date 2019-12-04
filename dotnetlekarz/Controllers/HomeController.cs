@@ -13,6 +13,7 @@ using System.Text;
 
 namespace dotnetlekarz.Controllers
 {
+    [Route("Home")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -27,18 +28,22 @@ namespace dotnetlekarz.Controllers
             _userService = userService;
         }
 
+        [HttpGet]
+        [Route("Index")]
         public IActionResult Index()
         {
             return View();
         }
 
         [Authorize(Roles = "Doctor")]
+        [Route("Policy")]
         public IActionResult Privacy()
         {
             Console.WriteLine(HttpContext.User.Claims);
             return View(_visitService.GetAllVisits());
         }
 
+        [Route("Error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {

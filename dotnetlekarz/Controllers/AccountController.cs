@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace dotnetlekarz.Controllers
 {
+    [Route("Account")]
     public class AccountController : Controller
     {
         private bool loggedIn = false;
@@ -26,12 +27,15 @@ namespace dotnetlekarz.Controllers
             _visitService = visitService;
         }
 
+        [HttpGet]
+        [Route("Index")]
         public IActionResult Index()
         {
             return View();
         }
 
         [AllowAnonymous]
+        [Route("Login")]
         public IActionResult Login()
         {
             return View();
@@ -39,6 +43,7 @@ namespace dotnetlekarz.Controllers
 
         [HttpPost]
         [AllowAnonymous]
+        [Route("Login")]
         public async Task<IActionResult> Login(User user)
         {
             Console.WriteLine(user.Login);
@@ -109,6 +114,7 @@ namespace dotnetlekarz.Controllers
             return new ClaimsPrincipal(claimsIdentity);
         }
 
+        [Route("Logout")]
         public async Task<IActionResult> Logout()
         {
             await HttpContext.SignOutAsync();
