@@ -21,6 +21,9 @@ namespace dotnetlekarz.Services
         {
             modelBuilder.Entity<Visit>()
             .HasIndex(p => new { p.DoctorId, p.DateTime }).IsUnique();
+
+            modelBuilder.Entity<User>()
+                .HasIndex(u => new { u.Login }).IsUnique();
         }
     }
 }

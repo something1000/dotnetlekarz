@@ -148,7 +148,7 @@ namespace dotnetlekarz.Controllers
         // POST:
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Route("ChooseData")]
+        [Route("ChooseDate")]
         public ActionResult ChooseDate(IFormCollection collection)
         {
             try

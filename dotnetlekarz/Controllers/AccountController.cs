@@ -34,8 +34,49 @@ namespace dotnetlekarz.Controllers
             return View();
         }
 
+        [Route("Register")]
         [AllowAnonymous]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [Route("Register")]
+        public async Task<IActionResult> Register(User user)
+        {
+            if (ModelState.IsValid)
+            {
+                user.UserRole = Models.User.Role.Visitor;
+                try
+                {
+                    _userService.AddUser(user);
+                }
+                catch (Microsoft.EntityFrameworkCore.DbUpdateException)
+                {
+                    TempData["LoginExists"] = "User with login: " + user.Login + " already exists";
+                    return View();
+                }
+
+                var claimsPrincipal = CreateClaimsPrincipal(user);
+                var authProperties = new AuthenticationProperties
+                {
+
+                };
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    claimsPrincipal,
+                    authProperties);
+                return RedirectToAction("Index", "Home");
+            }
+            ModelState.AddModelError("", "Some fields are invalid");
+            return View();
+        }
+
         [Route("Login")]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -44,14 +85,11 @@ namespace dotnetlekarz.Controllers
         [HttpPost]
         [AllowAnonymous]
         [Route("Login")]
-        public async Task<IActionResult> Login(User user)
+        public async Task<IActionResult> Login(string Login, string Password)
         {
-            Console.WriteLine(user.Login);
-            Console.WriteLine(user.Password);
-
             if (ModelState.IsValid)
             {
-                User validatedUser = ValidateUserLogin(user);
+                User validatedUser = ValidateUserLogin(Login, Password);
                 if(validatedUser != null)
                 {
                     var claimsPrincipal = CreateClaimsPrincipal(validatedUser);
@@ -90,10 +128,10 @@ namespace dotnetlekarz.Controllers
             return View();
         }
 
-        private User ValidateUserLogin(User user)
+        private User ValidateUserLogin(string Login, string Password)
         {
-            var registeredUser = _userService.GetUserByLogin(user.Login);
-            var hashedPassword = Models.User.HashPassword(user.Password);
+            var registeredUser = _userService.GetUserByLogin(Login);
+            var hashedPassword = Models.User.HashPassword(Password);
             if(registeredUser != null && registeredUser.Password == hashedPassword)
             {
                 return registeredUser;
@@ -120,5 +158,6 @@ namespace dotnetlekarz.Controllers
             await HttpContext.SignOutAsync();
             return RedirectToAction("Login", "Account");
         }
+
     }
 }

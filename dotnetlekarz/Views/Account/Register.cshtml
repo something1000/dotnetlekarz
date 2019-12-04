@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewData["Title"] = "Register";
+}
+
+@model User
+<div class="container">
+    <h1 class="text-capitalize text-center">Formularz rejestracji</h1>
+    <div class="row">
+        <div class="col-4 offset-4">
+            <form asp-controller="Account" asp-action="Register" method="post">
+                <div class="form-group row">
+                    <label for="name" class="col-4 col-form-label">Name</label>
+                    <input type="text" class="form-control col-8" id="name" name="name" aria-describedby="name" placeholder="Enter Name">
+                    <small class="text-danger text-center">@Html.ValidationMessageFor(u => u.Name, "")</small>
+                </div>
+                <div class="form-group row">
+                    <label for="surname" class="col-4 col-form-label">Surname</label>
+                    <input type="text" class="form-control col-8" id="surname" name="surname" aria-describedby="surname" placeholder="Enter Surname">
+                    <small class="text-danger text-center">@Html.ValidationMessageFor(u => u.Surname, "")</small>
+                </div>
+                <div class="form-group row">
+                    <label for="login" class="col-4 col-form-label">Login</label>
+                    <input type="text" class="form-control col-8" id="login" name="login" aria-describedby="login" placeholder="Enter Login">
+                    <small class="text-danger text-center">@Html.ValidationMessageFor(u => u.Login, "")</small>
+                </div>
+                @if (TempData["LoginExists"] != null)
+                {
+                    <div class="alert alert-danger" role="alert">
+                        @TempData["LoginExists"]
+                    </div>
+                }
+                <div class="form-group row">
+                    <label for="password" class="col-4 col-form-label">Password</label>
+                    <input type="password" class="form-control col-8" id="password" name="password" placeholder="Password">
+                    <small class="text-danger text-center">@Html.ValidationMessageFor(u => u.Password, "")</small>
+                </div>
+                <div class="form-group row">
+                    <small class="text-danger text-center">@Html.ValidationSummary(true)</small>
+                    <button type="submit" class="btn btn-primary col-12 form-">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
