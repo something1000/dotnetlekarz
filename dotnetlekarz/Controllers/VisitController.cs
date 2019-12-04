@@ -155,12 +155,17 @@ namespace dotnetlekarz.Controllers
             {
                 //WALIDACJA
                 List<User> doctors = _userService.GetAllUsers().FindAll(x => x.UserRole.Equals(Models.User.Role.Doctor));
+                bool docExists = false;
                 foreach (User d in doctors)
                 {
                     if (d.Login.Equals(collection["doctor"].ToString()))
+                    {
+                        docExists = true;
                         break;
-                    TempData["validationDoctor"] = "Wybierz doktora z listy";
+                    }
                 }
+                if (!docExists)
+                    TempData["validationDoctor"] = "Wybierz doktora z listy";
                 try
                 {
                     DateTime MyDateTime = DateTime.ParseExact(collection["date"].ToString(), "yyyy-MM-dd", null);
