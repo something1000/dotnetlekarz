@@ -15,6 +15,7 @@ namespace dotnetlekarz.Services
         {
             _dbContext = dbContext;
             this.userService = userService;
+            _dbContext.Database.EnsureCreated();
 
             visits = new List<Visit>();
 

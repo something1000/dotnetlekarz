@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -19,10 +20,6 @@ namespace dotnetlekarz
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            using (var db = new DocDbContext())
-            {
-                db.Database.EnsureCreated();
-            }
         }
 
         public IConfiguration Configuration { get; }
@@ -34,11 +31,15 @@ namespace dotnetlekarz
             {
                 options.Filters.Add(new AuthorizeFilter());
             });
+            services.AddEntityFrameworkSqlite();
+            services.AddDbContext<DocDbContext>(options =>
+                    {
+                        options.UseSqlite("Data Source=docvisit.db");
+                    });
 
             services.AddScoped<IVisitService, VisitService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddEntityFrameworkSqlite()
-                .AddDbContext<DocDbContext>();
+
             services.AddOpenApiDocument();
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

@@ -13,7 +13,6 @@ using System.Text;
 
 namespace dotnetlekarz.Controllers
 {
-    [Route("Home")]
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
@@ -29,7 +28,6 @@ namespace dotnetlekarz.Controllers
         }
 
         [HttpGet]
-        [Route("Index")]
         public IActionResult Index()
         {
             return View();

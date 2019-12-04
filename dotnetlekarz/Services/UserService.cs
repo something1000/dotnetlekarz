@@ -19,6 +19,7 @@ namespace dotnetlekarz.Services
         {
             _dbContext = dbContext;
             users = new List<User>();
+            _dbContext.Database.EnsureCreated();
         }
 
         //public static UserService GetInstance()
