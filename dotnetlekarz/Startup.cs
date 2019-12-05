@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
+using dotnetlekarz.Controllers;
 using dotnetlekarz.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -44,6 +45,8 @@ namespace dotnetlekarz
 
             services.AddScoped<IVisitService, VisitService>();
             services.AddScoped<IUserService, UserService>();
+
+            services.AddScoped<EditVisitFilter>();
 
             services.AddOpenApiDocument();
 

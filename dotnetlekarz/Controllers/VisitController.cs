@@ -213,6 +213,7 @@ namespace dotnetlekarz.Controllers
 
         // GET: Visit/Edit/5
         [Route("Edit")]
+        [ServiceFilter(typeof(EditVisitFilter))]
         public ActionResult Edit(int id)
         {
             Visit model = _visitService.GetVisit(id);
