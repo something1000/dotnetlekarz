@@ -9,21 +9,10 @@ namespace DocTests
     public class UserServiceTest
     {
 
-        private DocDbContext GetDocDbContext()
-        {
-            var options = new DbContextOptionsBuilder<DocDbContext>()
-                .UseInMemoryDatabase("in_mem_Test")
-                .Options;
-            DocDbContext db = new DocDbContext(options);
-            db.Database.EnsureDeleted();
-            db.Database.EnsureCreated();
-            return db;
-            
-        }
         [Fact]
         public void GetUserFromUserListByLoginAndCheckIfAllFieldsAreValidAndPasswordIsHashed()
         {
-            DocDbContext db = GetDocDbContext();
+            DocDbContext db = TestDbContext.GetDocDbContext();
             UserService us = new UserService(db);
 
             us.AddUser(new User
@@ -48,7 +37,7 @@ namespace DocTests
         [Fact]
         async public void AddUserToDatabaseThenFindHimByFunctionThenRemoveHimAndTryToFindAgain()
         {
-            DocDbContext db = GetDocDbContext();
+            DocDbContext db = TestDbContext.GetDocDbContext();
             UserService us = new UserService(db);
 
             us.AddUser(new User
