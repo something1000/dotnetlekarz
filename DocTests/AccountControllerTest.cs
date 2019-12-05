@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Routing;
+using Microsoft.Extensions.Logging;
 using Moq;
 using System;
 using System.Security.Claims;
@@ -25,7 +26,7 @@ namespace DocTests
         public async void CreateUsertThanTryToLoginWithProvidedCredentitials()
         {
             DocDbContext db = TestDbContext.GetDocDbContext();
-            UserService us = new UserService(db);
+            UserService us = new UserService(db); 
 
             us.AddUser(new User
             {
@@ -36,7 +37,7 @@ namespace DocTests
             });
 
 
-            AccountController ac = new AccountController(us, null);
+            AccountController ac = new AccountController(new Mock<ILogger<AccountController>>().Object, us, null);
 
             var urlHelperFactory = new Mock<IUrlHelperFactory>();
             //urlHelperFactory
