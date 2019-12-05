@@ -89,6 +89,9 @@ namespace dotnetlekarz
             app.UseAuthentication();
             app.UseAuthorization();
 
+            app.UseOpenApi();
+            app.UseSwaggerUi3();
+
             IList<CultureInfo> supportedCultures = new List<CultureInfo>
             {
                 new CultureInfo("en"),

@@ -33,14 +33,6 @@ namespace dotnetlekarz.Controllers
             return View();
         }
 
-        [Authorize(Roles = "Doctor")]
-        [Route("Policy")]
-        public IActionResult Privacy()
-        {
-            Console.WriteLine(HttpContext.User.Claims);
-            return View(_visitService.GetAllVisits());
-        }
-
         [Route("Error")]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None)]
         public IActionResult Error()
