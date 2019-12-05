@@ -16,11 +16,10 @@ namespace DocTests
         }
 
         [Fact]
-        public void GoToLoginPageAndCheckTitleAndTryToLoginWithDefaultAccountThenLogout()
+        public void GoToLoginPageAndTryToLoginWithDefaultAccountThenLogout()
         {
             _driver.Navigate()
                 .GoToUrl("https://localhost:5001/Account/Login");
-            Assert.Equal("Login - dotnetlekarz", _driver.Title);
 
             var loginElem = _driver.FindElement(By.Id("login"));
             var passwordElem = _driver.FindElement(By.Id("password"));
@@ -43,7 +42,6 @@ namespace DocTests
 
             logoutLink.Click();
 
-            Assert.Equal("Login - dotnetlekarz", _driver.Title);
 
         }
 
