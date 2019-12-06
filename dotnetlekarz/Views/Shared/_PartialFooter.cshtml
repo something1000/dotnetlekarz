@@ -1,7 +1,12 @@
 ﻿<footer class="border-top footer bg-primary text-white">
-    <div class="container">
-        <p>
-            &copy; @DateTime.Now.Year - dotnetlekarz
-        </p>
+  <div class="container">
+    <p>
+      &copy; @DateTime.Now.Year - dotnetlekarz
+    </p>
+  </div>
+  <div class="row">
+    <div class="col-sm-6 text-right">
+      @await Html.PartialAsync("_SelectLanguagePartial")
     </div>
+  </div>
 </footer>

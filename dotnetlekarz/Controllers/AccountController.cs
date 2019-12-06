@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace dotnetlekarz.Controllers
@@ -22,11 +23,14 @@ namespace dotnetlekarz.Controllers
         private IUserService _userService { get; set; }
         private IVisitService _visitService { get; set; }
 
-        public AccountController(ILogger<AccountController> logger, IUserService userService, IVisitService visitService)
+        private readonly IStringLocalizer<HomeController> _localizer;
+
+        public AccountController(ILogger<AccountController> logger, IUserService userService, IVisitService visitService, IStringLocalizer<HomeController> localizer)
         {
             _logger = logger;
             _userService = userService;
             _visitService = visitService;
+            _localizer = localizer;
         }
 
         private string GetUserName()
@@ -63,7 +67,7 @@ namespace dotnetlekarz.Controllers
                 }
                 catch (Microsoft.EntityFrameworkCore.DbUpdateException)
                 {
-                    TempData["LoginExists"] = "User with login: " + user.Login + " already exists";
+                    TempData["LoginExists"] = _localizer["User with login:"] + " " + user.Login + " " + _localizer["already exists"];
                     return View();
                 }
 
@@ -79,7 +83,7 @@ namespace dotnetlekarz.Controllers
                     authProperties);
                 return RedirectToAction("Index", "Home");
             }
-            ModelState.AddModelError("", "Some fields are invalid");
+            ModelState.AddModelError("", _localizer["Some fields are invalid"]);
             return View();
         }
 
@@ -133,7 +137,7 @@ namespace dotnetlekarz.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            ModelState.AddModelError("", "Invalid credentials");
+            ModelState.AddModelError("", _localizer["Invalid credentials"]);
             return View();
         }
 

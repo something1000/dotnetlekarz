@@ -117,28 +117,16 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel" xml:space="preserve">
-    <value>Anuluj</value>
+  <data name="already exists" xml:space="preserve">
+    <value>już istnieje</value>
   </data>
-  <data name="Day" xml:space="preserve">
-    <value>Dzień</value>
+  <data name="Invalid credentials" xml:space="preserve">
+    <value>Niepoprawne dane</value>
   </data>
-  <data name="Doctor" xml:space="preserve">
-    <value>Doktor</value>
+  <data name="Some fields are invalid" xml:space="preserve">
+    <value>Niektóre pola zawierają błedy</value>
   </data>
-  <data name="Hour" xml:space="preserve">
-    <value>Godzina</value>
-  </data>
-  <data name="Move" xml:space="preserve">
-    <value>Przenieś</value>
-  </data>
-  <data name="Sign up for a visit" xml:space="preserve">
-    <value>Zarejestruj wizytę</value>
-  </data>
-  <data name="Visits" xml:space="preserve">
-    <value>Wizyty</value>
-  </data>
-  <data name="Your visits" xml:space="preserve">
-    <value>Twoje wizyty</value>
+  <data name="User with login:" xml:space="preserve">
+    <value>Użytkownik o nazwie:</value>
   </data>
 </root>

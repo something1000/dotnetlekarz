@@ -10,6 +10,8 @@ using dotnetlekarz.Services;
 using Microsoft.AspNetCore.Authorization;
 using IronPdf;
 using System.Text;
+using Microsoft.AspNetCore.Localization;
+using Microsoft.AspNetCore.Http;
 
 namespace dotnetlekarz.Controllers
 {
@@ -31,6 +33,17 @@ namespace dotnetlekarz.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult SetLanguage(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(
+                CookieRequestCultureProvider.DefaultCookieName,
+                CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.UtcNow.AddYears(1) }
+            );
+            return LocalRedirect(returnUrl);
         }
 
         [Route("Error")]

@@ -117,28 +117,22 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="Cancel" xml:space="preserve">
-    <value>Anuluj</value>
+  <data name="Choose doctor from list" xml:space="preserve">
+    <value>"Wybierz doktora z listy"</value>
   </data>
-  <data name="Day" xml:space="preserve">
-    <value>Dzień</value>
+  <data name="Choose hour from list" xml:space="preserve">
+    <value>Wybierz godzinę z listy</value>
   </data>
-  <data name="Doctor" xml:space="preserve">
-    <value>Doktor</value>
+  <data name="Chosen hour is alredy busy, please select another" xml:space="preserve">
+    <value>Wybrana godzina jest już zajęta, proszę wybrać inną</value>
   </data>
-  <data name="Hour" xml:space="preserve">
-    <value>Godzina</value>
+  <data name="Clinic is open monday to friday only" xml:space="preserve">
+    <value>Przychodnia czynna tylko od poniedziałku do piątku</value>
   </data>
-  <data name="Move" xml:space="preserve">
-    <value>Przenieś</value>
+  <data name="Correct data format is: DD.MM.YYYY" xml:space="preserve">
+    <value>Poprawny format daty to: DD.MM.YYYY</value>
   </data>
-  <data name="Sign up for a visit" xml:space="preserve">
-    <value>Zarejestruj wizytę</value>
-  </data>
-  <data name="Visits" xml:space="preserve">
-    <value>Wizyty</value>
-  </data>
-  <data name="Your visits" xml:space="preserve">
-    <value>Twoje wizyty</value>
+  <data name="Next free term is:" xml:space="preserve">
+    <value>Najbliższy możliwy termin zapisu to:</value>
   </data>
 </root>

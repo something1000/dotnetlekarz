@@ -8,6 +8,7 @@ using dotnetlekarz.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 using Microsoft.Extensions.Logging;
 
 namespace dotnetlekarz.Controllers
@@ -20,14 +21,17 @@ namespace dotnetlekarz.Controllers
         private readonly IVisitService _visitService;
         private readonly IUserService _userService;
 
+        private readonly IStringLocalizer<VisitController> _localizer;
+
         private List<string> hours = new List<string>{ "07:00", "07:30", "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
                                                    "11:00", "11:30", "12:00", "12:30", "13:00", "13:30", "14:00", "14:30" };
 
-        public VisitController(ILogger<VisitController> logger, IVisitService service, IUserService userService)
+        public VisitController(ILogger<VisitController> logger, IVisitService service, IUserService userService, IStringLocalizer<VisitController> localizer)
         {
             _logger = logger;
             _visitService = service;
             _userService = userService;
+            _localizer = localizer;
         }
 
         private string GetUserName()
@@ -97,7 +101,7 @@ namespace dotnetlekarz.Controllers
                 if (!hours.Contains(collection["hour"].ToString()))
                 {
                     _logger.LogWarning("User: {login} tried to add visit with invalid hour", GetUserName());
-                    TempData["validationHour"] = "Wybierz godzinę z listy";
+                    TempData["validationHour"] = _localizer["Choose hour from list"];
                 }
 
                 User visitor, doctor;
@@ -138,7 +142,7 @@ namespace dotnetlekarz.Controllers
             catch (Microsoft.EntityFrameworkCore.DbUpdateException)
             {
                 _logger.LogError("User: {login} tried to add visit with reserved term", GetUserName());
-                TempData["noAdd"] = "Wybrana godzina jest już zajęta, proszę wybrać inną";
+                TempData["noAdd"] = _localizer["Chosen hour is alredy busy, please select another"];
                 TempData["docLogin"] = collection["docLogin"].ToString();
                 TempData["date"] = collection["date"].ToString();
                 TempData["edit"] = collection["edit"].ToString();
@@ -170,19 +174,19 @@ namespace dotnetlekarz.Controllers
                 if (!docExists)
                 {
                     _logger.LogWarning("User: {login} tried to add visit to invalid doctor", GetUserName());
-                    TempData["validationDoctor"] = "Wybierz doktora z listy";
+                    TempData["validationDoctor"] = _localizer["Choose doctor from list"];
                 }
                 try
                 {
                     DateTime MyDateTime = DateTime.ParseExact(collection["date"].ToString(), "yyyy-MM-dd", null);
                     if (MyDateTime.CompareTo(DateTime.Now) <= 0)
-                        TempData["validationDate"] = "Najbliższy możliwy termin zapisu to: " + DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+                        TempData["validationDate"] = _localizer["Next free term is:"] + " " + DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
                     else if (MyDateTime.DayOfWeek == DayOfWeek.Saturday || MyDateTime.DayOfWeek == DayOfWeek.Sunday)
-                        TempData["validationDate"] = "Przychodnia czynna tylko od poniedziałku do piątku";
+                        TempData["validationDate"] = _localizer["Clinic is open monday to friday only"];
                 }
                 catch
                 {
-                    TempData["validationDate"] = "Poprawny format daty to: DD.MM.YYYY";
+                    TempData["validationDate"] = _localizer["Correct data format is: DD.MM.YYYY"];
                 }
 
                 TempData["docLogin"] = collection["doctor"].ToString();
