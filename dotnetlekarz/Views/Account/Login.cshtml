@@ -1,31 +1,30 @@
 ﻿@using Microsoft.AspNetCore.Mvc.Localization
-
-@inject IViewLocalizer _localizer
+@inject IViewLocalizer Localizer
 
 @{
-    ViewData["Title"] = _localizer["Login"];
+    ViewData["Title"] = Localizer["Login"];
 }
 
 <div class="container">
-    <h1 class="text-capitalize text-center">@_localizer["Login Form"]</h1>
+    <h1 class="text-capitalize text-center">@Localizer["Login Form"]</h1>
     <div class="row">
         <div class="col-4 offset-4">
             <form asp-controller="Account" asp-action="Login" method="post">
                 <div class="form-group row">
-                    <label for="login" class="col-4 col-form-label">@_localizer["Login"]</label>
-                    <input type="text" class="form-control col-8" id="login" name="login" aria-describedby="login" placeholder=@_localizer["Login"]>
+                    <label for="login" class="col-4 col-form-label">@Localizer["Login"]</label>
+                    <input type="text" class="form-control col-8" id="login" name="login" aria-describedby="login" placeholder=@Localizer["Login"]>
                 </div>
                 <div class="form-group row">
-                    <label for="password" class="col-4 col-form-label">@_localizer["Password"]</label>
-                    <input type="password" class="form-control col-8" id="password" name="password" placeholder=@_localizer["Password"]>
+                    <label for="password" class="col-4 col-form-label">@Localizer["Password"]</label>
+                    <input type="password" class="form-control col-8" id="password" name="password" placeholder=@Localizer["Password"]>
                 </div>
                 <div class="form-group row">
                     <small class="text-danger text-center">@Html.ValidationSummary(true)</small>
-                    <button type="submit" class="btn btn-primary col-12 form-">@_localizer["Sign In"]</button>
+                    <button type="submit" class="btn btn-primary col-12 form-">@Localizer["Sign In"]</button>
                 </div>
             </form>
             <div class="text-center">
-                <small> @_localizer["No account?"] <a asp-controller="Account" asp-action="Register">@_localizer["Sign Up"]</a></small>
+                <small> @Localizer["No account?"] <a asp-controller="Account" asp-action="Register">@Localizer["Sign Up"]</a></small>
             </div>
         </div>
     </div>

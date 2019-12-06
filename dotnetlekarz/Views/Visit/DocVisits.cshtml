@@ -1,26 +1,28 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @{
-    ViewData["Title"] = "Wizyty";
+    ViewData["Title"] = @Localizer["Visits"];
 }
     <div>
         <div class="float-left">
-            <h1>Twoje wizyty</h1>
+            <h1>@Localizer["Your visits"]</h1>
         </div>
         <div class="float-right">
             <button class="btn btn-primary" onclick="location.href='@Url.Action("GenerateTodaysVisitsToPDF", "Visit")'">
-                Generuj dzisiejsze wizyty
+                @Localizer["Generate today's visits"]
             </button>
         </div>
     </div>
 <table class="table text-center">
-    <caption>Twoje wizyty</caption>
+    <caption>@Localizer["Your visits"]</caption>
     <thead>
         <tr class="bg-primary text-white">
-            <th scope="col">Pacjent</th>
-            <th scope="col">Dzień</th>
-            <th scope="col">Godzina</th>
-            <th scope="col">Przełóż</th>
-            <th scope="col">Odwołaj</th>
+            <th scope="col">@Localizer["Patient"]</th>
+            <th scope="col">@Localizer["Day"]</th>
+            <th scope="col">@Localizer["Hour"]</th>
+            <th scope="col">@Localizer["Move"]</th>
+            <th scope="col">@Localizer["Cancel"]</th>
         </tr>
     </thead>
     @foreach (var visit in Model)

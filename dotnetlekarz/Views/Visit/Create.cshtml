@@ -1,4 +1,6 @@
-﻿
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+
 @{
     ViewData["Title"] = "Test";
 }
@@ -6,12 +8,12 @@
 <div class="container">
     <div class="row">
         <div class="col-12 text-center">
-            <h1>Zapisz się na wizytę</h1>
+            <h1>@Localizer["Sign up for a visit"]</h1>
         </div>
         <div class="col-4 offset-4">
             <form method="post" asp-controller="Visit" asp-action="ChooseDate">
                 <div class="form-group row">
-                    <label for="doctor" class="col-sm-3 col-form-label">Lekarz</label>
+                    <label for="doctor" class="col-sm-3 col-form-label">@Localizer["Doctor"]</label>
                     <select name="doctor" class="form-control col-9" id="doctor">
                         @foreach (var doc in Model)
                         {
@@ -25,7 +27,7 @@
                 </div>
 
                 <div class="form-group row">
-                    <label for="date" class="col-sm-3 col-form-label">Wybierz dzień</label>
+                    <label for="date" class="col-sm-3 col-form-label">@Localizer["Choose day"]</label>
                     <input class="col-9" type="date" id="date" name="date"
                            value="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")"
                            min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" />
@@ -38,9 +40,9 @@
                 <input id="edit" name="edit"
                        value="-1" hidden />
 
-                <button type="submit" class="btn btn-primary" style="float: right;">Dalej</button>
+                <button type="submit" class="btn btn-primary" style="float: right;">@Localizer["Next"]</button>
             </form>
-            <button onclick="location.href='@Url.Action("Index", "Visit")'" class="btn btn-primary" style="float: left;">Cofnij</button>
+            <button onclick="location.href='@Url.Action("Index", "Visit")'" class="btn btn-primary" style="float: left;">@Localizer["Back"]</button>
 
         </div>
     </div>

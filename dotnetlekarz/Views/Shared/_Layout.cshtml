@@ -1,11 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-<head>
+@using Microsoft.AspNetCore.Mvc.Localization
+@inject IViewLocalizer Localizer
+  <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - dotnetlekarz</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body>
@@ -23,35 +25,35 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">@Localizer["Home"]</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Visit" asp-action="Index">Wizyty</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Visit" asp-action="Index">@Localizer["Visits"]</a>
                         </li>
                         @if (!User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Zaloguj</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">@Localizer["Sign In"]</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">Zarejestruj</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">@Localizer["Sign Up"]</a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Wyloguj</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">@Localizer["Log Out"]</a>
                             </li>
                             @if (User.IsInRole("Doctor"))
                             {
                                 <li class="nav-item ">
-                                    <a class="nav-link text-dark">Doktor: @User.Identity.Name</a>
+                                    <a class="nav-link text-dark">@Localizer["Doctor"]: @User.Identity.Name</a>
                                 </li>
                             }
                             @if (User.IsInRole("Visitor"))
                             {
                                 <li class="nav-item ">
-                                    <a class="nav-link text-dark">Pacjent: @User.Identity.Name</a>
+                                    <a class="nav-link text-dark">@Localizer["Patient"]: @User.Identity.Name</a>
                                 </li>
                             }
                         }
