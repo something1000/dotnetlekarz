@@ -37,7 +37,7 @@ namespace DocTests
             });
 
 
-            AccountController ac = new AccountController(new Mock<ILogger<AccountController>>().Object, us, null);
+            AccountController ac = new AccountController(new Mock<ILogger<AccountController>>().Object, us, null, null);
 
             var urlHelperFactory = new Mock<IUrlHelperFactory>();
             //urlHelperFactory
