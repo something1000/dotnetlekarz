@@ -101,7 +101,7 @@ namespace dotnetlekarz.Controllers
                 if (!hours.Contains(collection["hour"].ToString()))
                 {
                     _logger.LogWarning("User: {login} tried to add visit with invalid hour", GetUserName());
-                    TempData["validationHour"] = _localizer["Choose hour from list"];
+                    TempData["validationHour"] = _localizer["Choose hour from list"].ToString();
                 }
 
                 User visitor, doctor;
@@ -142,7 +142,7 @@ namespace dotnetlekarz.Controllers
             catch (Microsoft.EntityFrameworkCore.DbUpdateException)
             {
                 _logger.LogError("User: {login} tried to add visit with reserved term", GetUserName());
-                TempData["noAdd"] = _localizer["Chosen hour is alredy busy, please select another"];
+                TempData["noAdd"] = _localizer["Chosen hour is alredy busy, please select another"].ToString();
                 TempData["docLogin"] = collection["docLogin"].ToString();
                 TempData["date"] = collection["date"].ToString();
                 TempData["edit"] = collection["edit"].ToString();
@@ -174,19 +174,19 @@ namespace dotnetlekarz.Controllers
                 if (!docExists)
                 {
                     _logger.LogWarning("User: {login} tried to add visit to invalid doctor", GetUserName());
-                    TempData["validationDoctor"] = _localizer["Choose doctor from list"];
+                    TempData["validationDoctor"] = _localizer["Choose doctor from list"].ToString();
                 }
                 try
                 {
                     DateTime MyDateTime = DateTime.ParseExact(collection["date"].ToString(), "yyyy-MM-dd", null);
                     if (MyDateTime.CompareTo(DateTime.Now) <= 0)
-                        TempData["validationDate"] = _localizer["Next free term is:"] + " " + DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
+                        TempData["validationDate"] = _localizer["Next free term is:"].ToString() + " " + DateTime.Now.AddDays(1).ToString("yyyy-MM-dd");
                     else if (MyDateTime.DayOfWeek == DayOfWeek.Saturday || MyDateTime.DayOfWeek == DayOfWeek.Sunday)
-                        TempData["validationDate"] = _localizer["Clinic is open monday to friday only"];
+                        TempData["validationDate"] = _localizer["Clinic is open monday to friday only"].ToString();
                 }
                 catch
                 {
-                    TempData["validationDate"] = _localizer["Correct data format is: DD.MM.YYYY"];
+                    TempData["validationDate"] = _localizer["Correct data format is: DD.MM.YYYY"].ToString();
                 }
 
                 TempData["docLogin"] = collection["doctor"].ToString();

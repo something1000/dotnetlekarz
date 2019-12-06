@@ -67,7 +67,7 @@ namespace dotnetlekarz.Controllers
                 }
                 catch (Microsoft.EntityFrameworkCore.DbUpdateException)
                 {
-                    TempData["LoginExists"] = _localizer["User with login:"] + " " + user.Login + " " + _localizer["already exists"];
+                    TempData["LoginExists"] = _localizer["User with login:"].ToString() + " " + user.Login + " " + _localizer["already exists"].ToString();
                     return View();
                 }
 
@@ -83,7 +83,7 @@ namespace dotnetlekarz.Controllers
                     authProperties);
                 return RedirectToAction("Index", "Home");
             }
-            ModelState.AddModelError("", _localizer["Some fields are invalid"]);
+            ModelState.AddModelError("", _localizer["Some fields are invalid"].ToString());
             return View();
         }
 
@@ -137,7 +137,7 @@ namespace dotnetlekarz.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
-            ModelState.AddModelError("", _localizer["Invalid credentials"]);
+            ModelState.AddModelError("", _localizer["Invalid credentials"].ToString());
             return View();
         }
 
